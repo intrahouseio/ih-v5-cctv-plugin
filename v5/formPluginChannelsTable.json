@@ -8,7 +8,6 @@
       "title": "Channels",
       "type": "table",
       "prop": "unitchannelsTable",
-
       "columns": [
         { "prop": "chan", "title": "$Channel",  "type": "link", "command":"forward",  "width": 120 },
         { "prop": "name", "title": "$Name", "type": "input",  "width": 150  },
