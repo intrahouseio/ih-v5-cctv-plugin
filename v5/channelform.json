@@ -1,0 +1,50 @@
+{
+  "spacing": 4,
+  "grid": [
+    { "id": "plink", "xs": 6, "class": "main", "table": "devhard" },
+    { "id": "p3", "xs": 6, "class": "main", "table": "devhard" },
+    { "id": "p4", "xs": 12, "class": "main", "table": "devhard" },
+    { "id": "p5", "xs": 12, "class": "main", "table": "devhard" }
+  ],
+  "plink": [
+    { "prop": "name", "title": "$Name", "type": "input" },
+    { "prop": "url", "title": "$Url", "type": "input" }
+  ],
+  "p3": [
+    {
+      "prop": "type",
+      "title": "$Type",
+      "type": "droplist",
+      "data": [
+        { "id": "rtsp/h264", "title": "RTSP/H264" },
+        { "id": "rtsp/mjpeg", "title": "RTSP/MJPEG" },
+        { "id": "http/mjpeg", "title": "HTTP/MJPEG" },
+        { "id": "http/jpeg", "title": "HTTP/JPEG" }
+      ]
+    },
+    {
+      "prop": "protocol",
+      "title": "$Protocol",
+      "type": "droplist",
+      "hide": "data.p3.type.id === 'http/mjpeg' || data.p3.type.id === 'http/jpeg'",
+      "data": [
+        { "id": "tcp", "title": "TCP" },
+        { "id": "udp", "title": "UDP" }
+      ]
+    }
+  ],
+  "p4": [
+    {
+      "prop": "transport",
+      "title": "$Transport",
+      "type": "droplist",
+      "data": [
+        { "id": "ws", "title": "WebSocket" },
+        { "id": "p2p", "title": "P2P" }
+      ]
+    }
+  ],
+  "p5": [
+    { "prop": "comment", "title": "$Comment", "type": "input" }
+  ]
+}

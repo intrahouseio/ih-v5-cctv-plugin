@@ -1,0 +1,8 @@
+{
+    "id":"cctv",
+    "description":"CCTV",
+    "activation": false,
+    "resources": false,
+    "cross": true,
+    "version":"5.0.0"
+}

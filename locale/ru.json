@@ -1,0 +1,19 @@
+{
+  "Token": "License key",
+  "Wsport": "Транспорт порт WebSocket",
+  "Order": "№ пп",
+  "Id": "Id",
+  "Url": "Url",
+  "Type": "Type",
+  "Transport": "Транспорт (Клиент - Сервер)",
+  "Protocol": "Протокол",
+  "Cam": "Камера",
+  "Name": "Наименование",
+  "Txt": "Текст для навигатора",
+  "Comment": "Комментарий",
+  "ChildType": "Type",
+  "SnapUrl": "Url",
+  "SnapTimeout": "Timeout",
+  "Ext": "Дополнительно",
+  "Settings": "Настройка"
+}

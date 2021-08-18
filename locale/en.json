@@ -1,0 +1,19 @@
+{
+  "Token": "License key",
+  "Wsport": "Trasnport port WebSocket",
+  "Order": "Order Number",
+  "Id": "Id",
+  "Url": "Url",
+  "Type": "Type",
+  "Transport": "Transport (Client - Server)",
+  "Protocol": "Protocol",
+  "Cam": "Cam",
+  "Name": "Name",
+  "Txt": "Text for Navigator",
+  "Comment": "Comment",
+  "ChildType": "Type",
+  "SnapUrl": "Url",
+  "SnapTimeout": "Timeout",
+  "Ext": "Options",
+  "Settings": "Setting"
+}
