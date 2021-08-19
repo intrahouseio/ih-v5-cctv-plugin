@@ -89,7 +89,7 @@ function rtsp_stream({ id, data }) {
   // const is_end = (data[13] & 0x40) >>> 6;
   // const payload_type = data[13] & 0x1F;
 
-  // logger.log( type, nri, payload_type, is_start, is_end, data.slice(0, 25))
+  // plugin.log( type, nri, payload_type, is_start, is_end, data.slice(0, 25))
 
   send_channel({ id, data });
 
@@ -131,7 +131,7 @@ function rtsp_play({ id, rawdata }) {
 }
 
 function rtsp_close({ id, msg }) {
-  logger.log(`cam: ${id}, Close -> ${msg}`);
+  plugin.log(`cam: ${id}, Close -> ${msg}`);
   unsub_cam(id, true);
 }
 
@@ -146,16 +146,16 @@ function snapshot_play({ id, rawdata }) {
 }
 
 function snapshot_close({ id, msg }) {
-  logger.log(`cam: ${id}, Close -> ${msg}`);
+  plugin.log(`cam: ${id}, Close -> ${msg}`);
   unsub_cam(id, true);
 }
 
 function cam_debug({ id, msg }) {
-  logger.log(`cam ${id}: Normal -> ${msg}`);
+  plugin.log(`cam ${id}: Normal -> ${msg}`);
 }
 
 function cam_error({ id, msg }) {
-  logger.log(`cam ${id}: Error -> ${msg}`);
+  plugin.log(`cam ${id}: Error -> ${msg}`);
   if (STORE.cams[id] !== undefined) {
     STORE.cams[id].subs
       .forEach(tid => {
@@ -217,7 +217,7 @@ function checkchannel(type, channelid) {
 }
 
 function channelp2p(channelid) {
-  logger.log(`createchannel_p2p: ${channelid}`);
+  plugin.log(`createchannel_p2p: ${channelid}`);
   if (STORE.channels.p2p[channelid] === undefined) {
     STORE.channels.p2p[channelid] = {
       socket: new Peer({ wrtc: wrtc }),
@@ -233,7 +233,7 @@ function channelp2p(channelid) {
 }
 
 function registrationchannel(socket, type, channelid) {
-  logger.log(`registrationchannel: ${channelid}`);
+  plugin.log(`registrationchannel: ${channelid}`);
   if (type === 'ws' && STORE.channels.ws[channelid] === undefined) {
     STORE.channels.ws[channelid] = {
       socket,
@@ -251,7 +251,7 @@ function registrationchannel(socket, type, channelid) {
 }
 
 function removechannel(type, channelid) {
-  logger.log(`removechannel: ${channelid}`);
+  plugin.log(`removechannel: ${channelid}`);
   if (type === 'ws') {
     Object
       .keys(STORE.cams)
@@ -293,7 +293,7 @@ function removechannel(type, channelid) {
 }
 
 function echochannel(type, channelid) {
-  logger.log(`echochannel: ${channelid}`);
+  plugin.log(`echochannel: ${channelid}`);
 
   if (type === 'ws') {
     if (STORE.channels.ws[channelid] !== undefined) {
@@ -310,7 +310,7 @@ function echochannel(type, channelid) {
 
 function sub_cam(id, data) {
   if (STORE.cams[data.params.id] === undefined) {
-    logger.log(`cam_sub: ${data.params.id} (${data.params.url})`);
+    plugin.log(`cam_sub: ${data.params.id} (${data.params.url})`);
     STORE.cams[data.params.id] = { config: data.params, rtsp: null, snap: null, subs: [] };
     STORE.cams[data.params.id].subs.push(id);
     create_cam(id, data.params)
@@ -321,14 +321,14 @@ function sub_cam(id, data) {
       transferdata(id, { method: 'rtsp_ok', params: { camid: data.params.id, rawdata: STORE.cams[data.params.id].rawdata } });
     }
     if (STORE.cams[data.params.id].subs.find(subid => subid === id) === undefined) {
-      logger.log(`cam_sub: ${data.params.id} (${data.params.url})`);
+      plugin.log(`cam_sub: ${data.params.id} (${data.params.url})`);
       STORE.cams[data.params.id].subs.push(id);
     }
   }
 }
 
 function unsub_cam(camid, notification) {
-  logger.log(`cam_unsub: ${camid}`);
+  plugin.log(`cam_unsub: ${camid}`);
   if (STORE.cams[camid] !== undefined) {
 
     if (notification) {
@@ -362,7 +362,7 @@ function close_cam(channelid, camid) {
   if (STORE.cams[camid] !== undefined && STORE.cams[camid].subs) {
     const index = STORE.cams[camid].subs.findIndex(i => i === channelid);
     if (index !== -1) {
-      logger.log(`cam_unsub: ${camid}`);
+      plugin.log(`cam_unsub: ${camid}`);
       STORE.cams[camid].subs.splice(index, 1)
     }
   }
@@ -379,7 +379,7 @@ function p2p_signal(channelid, data) {
 }
 
 function p2p_connect() {
-  logger.log('p2p_connect');
+  plugin.log('p2p_connect');
 }
 
 function p2p_data(data) {
@@ -458,12 +458,12 @@ function systemCheck() {
   const cams = Object.keys(STORE.cams);
   const ws = Object.keys(STORE.channels.ws);
   const p2p = Object.keys(STORE.channels.p2p);
-  logger.log('system activity check');
-  logger.log(`cams: ${cams.length}`);
+  plugin.log('system activity check');
+  plugin.log(`cams: ${cams.length}`);
 
   cams.forEach(key => {
     if (STORE.cams[key] !== undefined && STORE.cams[key].subs) {
-      logger.log(`cam ${key}: subs ${STORE.cams[key].subs.length}`);
+      plugin.log(`cam ${key}: subs ${STORE.cams[key].subs.length}`);
       if (STORE.cams[key].subs.length === 0) {
         if (STORE.check.cams[key] === undefined) {
           STORE.check.cams[key] = 1;
@@ -478,7 +478,7 @@ function systemCheck() {
     }
   });
 
-  logger.log(`channels_ws: ${ws.length}`);
+  plugin.log(`channels_ws: ${ws.length}`);
 
   ws.forEach(key => {
     if (STORE.channels.ws[key] !== undefined) {
@@ -489,7 +489,7 @@ function systemCheck() {
     }
   });
 
-  logger.log(`channels_p2p: ${p2p.length}`);
+  plugin.log(`channels_p2p: ${p2p.length}`);
 
   p2p.forEach(key => {
     if (STORE.channels.p2p[key] !== undefined) {
@@ -500,15 +500,15 @@ function systemCheck() {
     }
   });
 
-  logger.log('---------------------------');
-  logger.log('');
+  plugin.log('---------------------------');
+  plugin.log('');
 
   const tcams = Object.keys(STORE.check.cams);
   const tws = Object.keys(STORE.check.ws);
   const tp2p = Object.keys(STORE.check.p2p);
 
-  logger.log('system timeout check');
-  logger.log(`timeout subs: ${tcams.length}`);
+  plugin.log('system timeout check');
+  plugin.log(`timeout subs: ${tcams.length}`);
 
   tcams.forEach(key => {
     if (STORE.check.cams[key] !== undefined) {
@@ -518,12 +518,12 @@ function systemCheck() {
         unsub_cam(key, false);
         delete STORE.check.cams[key];
       } else {
-        logger.log(`sub cam ${key}: timeout ${interval}`);
+        plugin.log(`sub cam ${key}: timeout ${interval}`);
       }
     }
   });
 
-  logger.log(`timeout channels_ws: ${tws.length}`);
+  plugin.log(`timeout channels_ws: ${tws.length}`);
   tws.forEach(key => {
     if (STORE.check.ws[key] !== undefined) {
       removechannel('ws', key);
@@ -531,28 +531,28 @@ function systemCheck() {
     }
   });
 
-  logger.log(`timeout channels_p2p: ${tp2p.length}`);
+  plugin.log(`timeout channels_p2p: ${tp2p.length}`);
   tp2p.forEach(key => {
     if (STORE.check.p2p[key] !== undefined) {
       removechannel('p2p', key);
       delete STORE.check.p2p[key]
     }
   });
-  logger.log('---------------------------');
-  logger.log('');
+  plugin.log('---------------------------');
+  plugin.log('');
 
-  logger.log(`buffer channels_ws: ${Object.keys(STORE.channels.ws).length}`);
+  plugin.log(`buffer channels_ws: ${Object.keys(STORE.channels.ws).length}`);
   Object.keys(STORE.channels.ws).forEach(key => {
     if (STORE.channels.ws[key] !== undefined && STORE.channels.ws[key].socket) {
       const size = (STORE.channels.ws[key].socket.bufferedAmount / 1024 / 1024).toFixed(2)
-      logger.log(`channel ${key}: ${size} mb`);
+      plugin.log(`channel ${key}: ${size} mb`);
       if (size >= 40) {
         removechannel('ws', key);
       }
     }
   });
-  logger.log('---------------------------');
-  logger.log('');
+  plugin.log('---------------------------');
+  plugin.log('');
 }
 
 process.on('message', msg => {
@@ -631,10 +631,10 @@ async function main(options) {
   const loglevel = opt.loglevel || 0;
 
   logger.start(logfile, loglevel);
-  logger.log('Plugin cctv has started  with args: ' + process.argv[2]);
+  plugin.log('Plugin cctv has started  with args: ' + process.argv[2]);
 
   const settings = await plugin.params.get();
-  logger.log(`transport WebSocket: ${settings.wsport || 8099}`)
+  plugin.log(`transport WebSocket: ${settings.wsport || 8099}`)
   const wss = new WebSocket.Server({ port: settings.wsport || 8099 });
   wss.on('connection', ws_connection);
 
