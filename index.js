@@ -25,6 +25,16 @@ const STORE = {
   },
 };
 
+const config = { 
+  iceServers: [
+    { urls: ['stun:stun.l.google.com:19302', 'stun:global.stun.twilio.com:3478'] },
+    {
+      urls: 'turn:turn.ih-systems.com:47000',
+      username: 'ihv5',
+      credential: '136d2723b0ac',
+    },
+  ]
+}
 
 const SYSTEM_CHECK_INTERVAL = 1000 * 20;
 const CHANNEL_CHECK_INTERVAL = 1000 * 10;
@@ -220,7 +230,7 @@ function channelp2p(channelid) {
   plugin.log(`createchannel_p2p: ${channelid}`,2);
   if (STORE.channels.p2p[channelid] === undefined) {
     STORE.channels.p2p[channelid] = {
-      socket: new Peer({ wrtc: wrtc }),
+      socket: new Peer({ config, wrtc: wrtc }),
       activity: Date.now(),
       state: 0,
     };
