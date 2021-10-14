@@ -9,7 +9,7 @@ const params = {
 }
 
 
-const forked = fork('index.js', [JSON.stringify(params), 'debug']);
+const forked = fork('test2.js', [JSON.stringify(params), 'debug']);
 
 forked.on('message', (msg) => {
   console.log(msg);
