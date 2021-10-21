@@ -21,7 +21,7 @@ const channels = [
     protocol: "udp",
     transport: "p2p",
     comment: "",
-    snap_url: "http://admin:hikvision662412@192.168.0.64:80/ISAPI/Streaming/channels/101/picture?snapShotImageType=JPEG",
+    snap_url: "",
     snap_timeout: 30
   }
 ]
