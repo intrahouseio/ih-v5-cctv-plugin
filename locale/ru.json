@@ -12,7 +12,7 @@
   "Txt": "Текст для навигатора",
   "Comment": "Комментарий",
   "ChildType": "Type",
-  "SnapUrl": "Url",
+  "SnapUrl": "Snapshot Url",
   "SnapTimeout": "Timeout",
   "Ext": "Дополнительно",
   "Settings": "Настройка"

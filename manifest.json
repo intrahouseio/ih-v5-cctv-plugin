@@ -3,7 +3,7 @@
   "description": "CCTV",
   "module": "index.js",
   "single": 1,
-  "restartOnChannelsChange": 0,
+  "restartOnChannelsChange": 1,
   "params": [],
   "chdefault": {
     "chan": "cam_1",
@@ -12,7 +12,9 @@
     "type": "rtsp/h264",
     "protocol": "udp",
     "transport": "p2p",
-    "comment": ""
+    "comment": "",
+    "snap_url": "http://admin:123456@192.168.0.64:80/ISAPI/Streaming/channels/101/picture?snapShotImageType=JPEG",
+    "snap_timeout": 30
   },
   "actions": [{}]
 }

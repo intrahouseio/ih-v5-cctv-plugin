@@ -45,6 +45,9 @@
     }
   ],
   "p5": [
+    { "prop": "snap_url", "title": "$SnapUrl", "type": "input" }
+  ],
+  "p6": [
     { "prop": "comment", "title": "$Comment", "type": "input" }
   ]
 }

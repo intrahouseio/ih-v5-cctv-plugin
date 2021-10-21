@@ -4,8 +4,7 @@ const Peer = require('simple-peer');
 const wrtc = require('wrtc');
 const WebSocket = require('ws');
 const fs = require('fs');
-
-const logger = require('./lib/logger');
+const path = require('path');
 
 const Rtsp = require('./lib/rtsp');
 const Snapshot = require('./lib/snapshot');
@@ -24,6 +23,10 @@ const STORE = {
     p2p: {},
   },
 };
+
+let opt = {};
+let settings = {};
+let channels = [];
 
 const config = { 
   iceServers: [
@@ -455,7 +458,6 @@ function ws_connection(ws) {
 
 function channel_settings(id, data) {
   if (data.params.type === 'ws') {
-    const settings = {};
     transferdata(id, { method: 'channel_settings', params: { type: 'ws', port: settings.wsport || 8099 } });
   }
   if (data.params.type === 'p2p') {
@@ -587,36 +589,35 @@ process.on('message', msg => {
         break;
     }
   }
-});
+  if (typeof msg === 'object' && msg.type === 'command' && msg.command !== undefined) {
+    if (msg.command === 'snap' && msg.camid) {
+      const cam = channels.find(i => i.id === msg.camid)
 
-/*
-plugin.on('command', (command) => {
-  if (command.type === 'snap') {
-    const cam = plugin.channels.find(i => i.id === command.camid)
-    if (cam !== undefined && cam.settings) {
-      const snap = cam.settings.find(i => i.settings_type === 'snap');
-      if (snap) {
-        jpeg(snap.snap_url, snap.snap_timeout)
+      if (cam && cam.snap_url) {
+        jpeg(cam.snap_url, cam.snap_timeout)
           .then((data) => {
-            const path = `${plugin.system.tempdir}/snapshot/`;
+            const pathDir = path.join(opt.temppath, 'snapshot');
             const filename = `snap_${Date.now()}.jpg`;
+            const pathFile = path.join(pathDir, filename);
+            
+            if (!fs.existsSync(pathDir)){
+                fs.mkdirSync(pathDir);
+            }
+
             try {
-              fs.writeFileSync(path + filename, data);
-              command.resolve({ filename: path + filename });
+              fs.writeFileSync(pathFile, data);
+              process.send({ ...msg, response: 1, payload: { filename: pathFile } });
             } catch (e) {
-              command.reject(e.message);
+              process.send({ ...msg, response: 0, message: e.message });
             }
           })
-          .catch((msg) => command.reject(msg));
-      } else {
-        command.reject(`no snapshot option for camera ${command.camid}`)
+          .catch((msg) => {
+            process.send({ ...msg, response: 0, message: msg });
+          });
       }
-    } else {
-      command.reject(`no snapshot option for camera ${command.camid}`)
     }
   }
 });
-*/
 
 function transferdata(uuid, payload) {
   process.send({ 
@@ -630,28 +631,16 @@ function transferdata(uuid, payload) {
 
 
 async function main(options) {
-  let opt;
-  try {
-    opt = JSON.parse(process.argv[2]);
-  } catch (e) {
-    opt = {};
-  }
+  opt = plugin.opt;
+  settings = await plugin.params.get();
+  channels = await plugin.channels.get();
 
-  const logfile = opt.logfile || path.join(__dirname, 'ih_cctv.log');
-  const loglevel = opt.loglevel || 0;
-
-  logger.start(logfile, loglevel);
-  plugin.log('Plugin cctv has started  with args: ' + process.argv[2]);
-
-  const settings = await plugin.params.get();
   plugin.log(`transport WebSocket: ${settings.wsport || 8099}`)
+
   const wss = new WebSocket.Server({ port: settings.wsport || 8099 });
   wss.on('connection', ws_connection);
 
   setInterval(systemCheck, SYSTEM_CHECK_INTERVAL);
-  setInterval(sendProcessInfo, 10000);
-
-  sendProcessInfo();
 }
 
 main();

@@ -12,7 +12,7 @@
   "Txt": "Text for Navigator",
   "Comment": "Comment",
   "ChildType": "Type",
-  "SnapUrl": "Url",
+  "SnapUrl": "Snapshot Url",
   "SnapTimeout": "Timeout",
   "Ext": "Options",
   "Settings": "Setting"
