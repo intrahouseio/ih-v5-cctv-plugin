@@ -637,6 +637,10 @@ async function main(options) {
 
   plugin.log(`transport WebSocket: ${settings.wsport || 8099}`)
 
+  plugin.onChange('params', data => {
+    process.exit(0);
+  });
+
   const wss = new WebSocket.Server({ port: settings.wsport || 8099 });
   wss.on('connection', ws_connection);
 
