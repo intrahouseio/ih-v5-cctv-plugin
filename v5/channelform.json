@@ -7,8 +7,17 @@
     { "id": "p5", "xs": 12, "class": "main", "table": "devhard" }
   ],
   "plink": [
+    { "prop": "chan", "title": "ID", "type": "input" },
     { "prop": "name", "title": "$Name", "type": "input" },
-    { "prop": "url", "title": "$Url", "type": "input" }
+    {
+      "prop": "transport",
+      "title": "$Transport",
+      "type": "droplist",
+      "data": [
+        { "id": "ws", "title": "WebSocket" },
+        { "id": "p2p", "title": "P2P" }
+      ]
+    }
   ],
   "p3": [
     {
@@ -34,15 +43,8 @@
     }
   ],
   "p4": [
-    {
-      "prop": "transport",
-      "title": "$Transport",
-      "type": "droplist",
-      "data": [
-        { "id": "ws", "title": "WebSocket" },
-        { "id": "p2p", "title": "P2P" }
-      ]
-    }
+     { "prop": "url", "title": "$Url", "type": "input" }
+    
   ],
   "p5": [
     { "prop": "snap_url", "title": "$SnapUrl", "type": "input" }
@@ -51,3 +53,4 @@
     { "prop": "comment", "title": "$Comment", "type": "input" }
   ]
 }
+
