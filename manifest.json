@@ -14,7 +14,8 @@
     "transport": "p2p",
     "comment": "",
     "snap_url": "http://admin:123456@192.168.0.64:80/ISAPI/Streaming/channels/101/picture?snapShotImageType=JPEG",
-    "snap_timeout": 30
+    "snap_timeout": 30,
+    "check_pps": false
   },
   "actions": [{}]
 }

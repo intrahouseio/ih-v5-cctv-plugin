@@ -15,5 +15,6 @@
   "SnapUrl": "Snapshot Url",
   "SnapTimeout": "Timeout",
   "Ext": "Дополнительно",
-  "Settings": "Настройка"
+  "Settings": "Настройка",
+  "CheckPPS": "Проверка PPS"
 }

@@ -40,7 +40,8 @@
         { "id": "tcp", "title": "TCP" },
         { "id": "udp", "title": "UDP" }
       ]
-    }
+    },
+    { "prop": "check_pps", "title": "$CheckPPS", "type": "cb" }
   ],
   "p4": [
      { "prop": "url", "title": "$Url", "type": "input" }
