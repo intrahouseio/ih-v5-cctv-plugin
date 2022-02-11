@@ -1,3 +1,4 @@
+const fs = require('fs');
 const Rtsp = require('./lib/rtsp');
 
 
@@ -5,7 +6,7 @@ const Rtsp = require('./lib/rtsp');
 const rtsp = new Rtsp({
   "chan": "cam_1",
   "name":"Cam1",
-  "url": b,
+  "url": c,
   "type": "rtsp/h264",
   "protocol": "tcp",
   "transport": "p2p",
