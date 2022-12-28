@@ -1,4 +1,4 @@
-const plugin = require('ih-plugin-api')();
+// const plugin = require('ih-plugin-api')();
 
 const Peer = require('simple-peer');
 const wrtc = require('wrtc');
@@ -12,6 +12,7 @@ const HttpStream = require('./lib/http-stream');
 const jpeg = require('./lib/jpeg');
 const tools = require('./lib/tools');
 
+let plugin;
 
 const STORE = {
   cams: { },
@@ -631,6 +632,16 @@ function transferdata(uuid, payload) {
 
 
 async function main(options) {
+  try {
+    const argv = JSON.parse(process.argv[2]);
+    const pluginapi = argv && argv.pluginapi ? argv.pluginapi : 'ih-plugin-api';
+   
+    plugin = require(pluginapi+'/index.js')();
+  } catch (e) {
+    console.log('ERROR: Missing or invalid pluginapi path')
+    process.exit(1);
+  }
+  
   opt = plugin.opt;
   settings = await plugin.params.get();
   channels = await plugin.channels.get();
